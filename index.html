@@ -78,10 +78,10 @@
             try {
                 // Fetch data from the API
                 const response = await fetch("https://api.hardcover.app/v1/graphql", {
-                    method: "POST",
+                    method: "GET",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer YOUR_HARDCOVER_API_KEY`
+                        "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2ZXJzaW9uIjoiNiIsImlkIjoyMTM5MiwibG9nZ2VkSW4iOnRydWUsInN1YiI6IjIxMzkyIiwiaWF0IjoxNzMxMTU1NTAwLCJleHAiOjE3NjI2MDU0MDAsImh0dHBzOi8vaGFzdXJhLmlvL2p3dC9jbGFpbXMiOnsieC1oYXN1cmEtYWxsb3dlZC1yb2xlcyI6WyJ1c2VyIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS1yb2xlIjoidXNlciIsIlgtaGFzdXJhLXVzZXItaWQiOiIyMTM5MiJ9fQ.ixOh0kRlQ3WeLlSbfAXf03H8JwxTqv-QC9oj7sLUsw0`
                     },
                     body: JSON.stringify({ query, variables: { title, author } })
                 });
