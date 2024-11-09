@@ -57,12 +57,7 @@
             // Define the GraphQL query
             const query = `
                 query Test($title: String!, $author: String) {
-                    books(where: { 
-                        _and: [
-                            {title: {_eq: $title}},
-                            ${author ? `{contributions: {author: {name: {_eq: "${author}"}}}}` : ''}
-                        ]
-                    }) {
+                   books(where: {title: {_eq: "Sky in the Deep"}})  {
                         title
                         pages
                         book_series {
