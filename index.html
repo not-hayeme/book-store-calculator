@@ -12,7 +12,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f4f4f4;
+            background-color: #f7f7f7;
         }
         form, .result {
             background: #fff;
@@ -54,9 +54,9 @@
             const title = document.getElementById('title').value;
             const author = document.getElementById('author').value;
 
-            // Define the GraphQL query
+            // GraphQL query with dynamic variables for title and author
             const query = `
-                query Test($title: String!, $author: String) {
+                query GetBook($title: String!, $author: String) {
                    books(where: {title: {_eq: "Sky in the Deep"}})  {
                         title
                         pages
@@ -71,7 +71,6 @@
                 }`;
 
             try {
-                // Fetch data from the API
                 const response = await fetch("https://api.hardcover.app/v1/graphql", {
                     method: "POST",
                     headers: {
@@ -80,7 +79,7 @@
                     },
                     body: JSON.stringify({ query, variables: { title, author } })
                 });
-                
+
                 const data = await response.json();
 
                 if (data && data.data.books.length > 0) {
