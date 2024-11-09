@@ -49,60 +49,64 @@
         <div><strong>Price (DZD):</strong> <span id="book-price"></span></div>
     </div>
 
-    <script>
-        async function fetchBookData() {
-            const title = document.getElementById('title').value;
-            const author = document.getElementById('author').value;
+   <script>
+    async function fetchBookData() {
+        const title = document.getElementById('title').value;
+        const author = document.getElementById('author').value;
 
-            // GraphQL query with dynamic variables for title and author
-            const query = `
-                query GetBook($title: String!, $author: String) {
-                   books(where: {title: {_eq: "Sky in the Deep"}})  {
-                        title
-                        pages
-                        book_series {
-                            series {
-                                author {
-                                    name
-                                }
+        // GraphQL query with dynamic variables for title and author
+        const query = `
+            query GetBook {
+               books(where: {title: {_eq: "Sky in the Deep"}})  {
+                    title
+                    pages
+                    book_series {
+                        series {
+                            author {
+                                name
                             }
                         }
                     }
-                }`;
-
-            try {
-                const response = await fetch("https://api.hardcover.app/v1/graphql", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2ZXJzaW9uIjoiNiIsImlkIjoyMTM5MiwibG9nZ2VkSW4iOnRydWUsInN1YiI6IjIxMzkyIiwiaWF0IjoxNzMxMTU1NTAwLCJleHAiOjE3NjI2MDU0MDAsImh0dHBzOi8vaGFzdXJhLmlvL2p3dC9jbGFpbXMiOnsieC1oYXN1cmEtYWxsb3dlZC1yb2xlcyI6WyJ1c2VyIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS1yb2xlIjoidXNlciIsIlgtaGFzdXJhLXVzZXItaWQiOiIyMTM5MiJ9fQ.ixOh0kRlQ3WeLlSbfAXf03H8JwxTqv-QC9oj7sLUsw0`
-                    },
-                    body: JSON.stringify({ query, variables: { title, author } })
-                });
-
-                const data = await response.json();
-
-                if (data && data.data.books.length > 0) {
-                    const book = data.data.books[0];
-                    const bookAuthor = book.book_series[0]?.series?.author?.name || "Unknown Author";
-                    const pages = book.pages || 0;
-                    const price = (pages * 2) + 500 + 300; // Calculate price in DZD
-
-                    // Display book details and price
-                    document.getElementById('book-title').innerText = book.title;
-                    document.getElementById('book-author').innerText = bookAuthor;
-                    document.getElementById('book-pages').innerText = pages;
-                    document.getElementById('book-price').innerText = price + " DZD";
-                    document.getElementById('result').style.display = "block";
-                } else {
-                    alert("Book not found. Please check the title and try again.");
                 }
-            } catch (error) {
-                console.error("Error fetching book data:", error);
-                alert("An error occurred. Please try again later.");
+            }`;
+
+        try {
+            const response = await fetch("https://api.hardcover.app/v1/graphql", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2ZXJzaW9uIjoiNiIsImlkIjoyMTM5MiwibG9nZ2VkSW4iOnRydWUsInN1YiI6IjIxMzkyIiwiaWF0IjoxNzMxMTU1NTAwLCJleHAiOjE3NjI2MDU0MDAsImh0dHBzOi8vaGFzdXJhLmlvL2p3dC9jbGFpbXMiOnsieC1oYXN1cmEtYWxsb3dlZC1yb2xlcyI6WyJ1c2VyIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS1yb2xlIjoidXNlciIsIlgtaGFzdXJhLXVzZXItaWQiOiIyMTM5MiJ9fQ.ixOh0kRlQ3WeLlSbfAXf03H8JwxTqv-QC9oj7sLUsw0`
+                },
+                body: JSON.stringify({ query, variables: { title, author } })
+            });
+
+            const data = await response.json();
+            
+            console.log("API Response:", data); // Log the response for debugging
+
+            // Check if 'data' and 'data.books' exist before accessing it
+            if (data && data.data && data.data.books && data.data.books.length > 0) {
+                const book = data.data.books[0];
+                const bookAuthor = book.book_series[0]?.series?.author?.name || "Unknown Author";
+                const pages = book.pages || 0;
+                const price = (pages * 2) + 500 + 300; // Calculate price in DZD
+
+                // Display book details and price
+                document.getElementById('book-title').innerText = book.title;
+                document.getElementById('book-author').innerText = bookAuthor;
+                document.getElementById('book-pages').innerText = pages;
+                document.getElementById('book-price').innerText = price + " DZD";
+                document.getElementById('result').style.display = "block";
+            } else {
+                alert("Book not found. Please check the title and try again.");
             }
+        } catch (error) {
+            console.error("Error fetching book data:", error);
+            alert("An error occurred. Please try again later.");
         }
-    </script>
+    }
+</script>
+
 
 </body>
 </html>
